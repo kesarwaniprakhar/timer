@@ -1,23 +1,49 @@
 import logo from './logo.svg';
 import './App.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { increment } from './slices/counterSlice';
+import { useEffect, useRef } from 'react';
 
 function App() {
+
+  let value = useSelector( ( state ) => state.counter.value )
+  const dispatch = useDispatch()
+  const times = useRef(0)
+  const timer = useRef(null)
+
+  const onClickHandler = (event) => {
+    clearInterval(timer.current)
+  }
+
+  useEffect(()=>{
+    times.current += 1
+    console.log("times current", times.current, value)
+  })
+
+  useEffect(()=>{
+    
+    timer.current = setInterval(()=>{
+      console.log("interval", Date.now(), value)
+      dispatch(increment())
+
+    },3000)
+
+    console.log("timer", timer)
+
+    return ()=>{
+      console.log("cleanup running")
+      clearInterval(timer.current)
+    }
+
+  },[])
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className="">
+      <header className="app">
+        {value}
       </header>
+
+      <button onClick={onClickHandler}>Stop</button>
     </div>
   );
 }
