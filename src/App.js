@@ -9,10 +9,10 @@ function App() {
   let value = useSelector( ( state ) => state.counter.value )
   const dispatch = useDispatch()
   const times = useRef(0)
-  const timer = useRef(null)
+  // const timer = useRef(null)
 
   const onClickHandler = (event) => {
-    clearInterval(timer.current)
+    // clearInterval(timer.current)
   }
 
   useEffect(()=>{
@@ -22,17 +22,17 @@ function App() {
 
   useEffect(()=>{
     
-    timer.current = setInterval(()=>{
-      console.log("interval", Date.now(), value)
+    const timer = setInterval(()=>{
+      console.log("interval", Date.now())
       dispatch(increment())
 
-    },3000)
+    },20000)
 
     console.log("timer", timer)
 
     return ()=>{
       console.log("cleanup running")
-      clearInterval(timer.current)
+      // clearInterval(timer.current)
     }
 
   },[])
